@@ -26,47 +26,83 @@ class Pairs{
 }
 
 class Solution {
-    public static int numEnclaves(int[][] grid) {
+//     public static int numEnclaves(int[][] grid) {
+//         int ans = 0;
+//         int row = grid.length;
+//         int cols = grid[0].length;
+//         int[][] visited = new int[row][cols];
+//         Queue<Pairs> queue = new LinkedList<>();
+//         for (int i=0;i<row;i++){
+//             for (int j=0;j<cols;j++){
+//                 if (i==0 || i==row-1 || j==0 || j==cols-1){
+//                     int num = grid[i][j];
+//                     if (num == 1){
+//                         visited[i][j] = 1;
+//                         queue.add(new Pairs(i,j));
+//                     }
+//                 }
+//             }
+//         }
+// //        System.out.println(queue);
+//         int delrow[] = {-1,0,+1,0};
+//         int delcol[] = {0,+1,0,-1};
+//         while (!queue.isEmpty()){
+//             int r = queue.peek().row;
+//             int c = queue.peek().col;
+//             queue.remove();
+//             for (int i=0;i<4;i++){
+//                 int nrow = r + delrow[i];
+//                 int ncol = c + delcol[i];
+//                 if (nrow>=0 && nrow<row && ncol>=0 && ncol < cols  && grid[nrow][ncol] == 1
+//                         && visited[nrow][ncol] == 0){
+//                     queue.add(new Pairs(nrow,ncol));
+//                     visited[nrow][ncol] = 1;
+//                 }
+//             }
+//         }
+//         for (int i=0;i<row;i++){
+//             for (int j=0;j<cols;j++){
+//                 if (grid[i][j]==1 && visited[i][j]==0){
+//                     ans++;
+//                 }
+//             }
+//         }
+//         return ans;
+//     }
+public static int numEnclaves(int[][] grid) {
         int ans = 0;
-        int row = grid.length;
+        int rows = grid.length;
         int cols = grid[0].length;
-        int[][] visited = new int[row][cols];
-        Queue<Pairs> queue = new LinkedList<>();
-        for (int i=0;i<row;i++){
+        for (int i=0;i<rows;i++){
             for (int j=0;j<cols;j++){
-                if (i==0 || i==row-1 || j==0 || j==cols-1){
-                    int num = grid[i][j];
-                    if (num == 1){
-                        visited[i][j] = 1;
-                        queue.add(new Pairs(i,j));
+                if (i==0 || j==0 || i==rows-1 || j==cols-1){
+                    if (grid[i][j]==1){
+                        sinkGrid(grid,i,j,rows,cols);
                     }
                 }
             }
         }
-//        System.out.println(queue);
-        int delrow[] = {-1,0,+1,0};
-        int delcol[] = {0,+1,0,-1};
-        while (!queue.isEmpty()){
-            int r = queue.peek().row;
-            int c = queue.peek().col;
-            queue.remove();
-            for (int i=0;i<4;i++){
-                int nrow = r + delrow[i];
-                int ncol = c + delcol[i];
-                if (nrow>=0 && nrow<row && ncol>=0 && ncol < cols  && grid[nrow][ncol] == 1
-                        && visited[nrow][ncol] == 0){
-                    queue.add(new Pairs(nrow,ncol));
-                    visited[nrow][ncol] = 1;
-                }
-            }
-        }
-        for (int i=0;i<row;i++){
+        for (int i=0;i<rows;i++){
             for (int j=0;j<cols;j++){
-                if (grid[i][j]==1 && visited[i][j]==0){
+                if (grid[i][j] == 1){
                     ans++;
                 }
             }
         }
         return ans;
+    }
+
+    public static void sinkGrid(int[][] grid,int i,int j,int rows,int cols){
+        if (i<0 || i>=rows || j<0 || j>=cols){
+            return;
+        }
+        if (grid[i][j] == 0){
+            return;
+        }
+        grid[i][j] = 0;
+        sinkGrid(grid,i-1,j,rows,cols);
+        sinkGrid(grid,i,j+1,rows,cols);
+        sinkGrid(grid,i+1,j,rows,cols);
+        sinkGrid(grid,i,j-1,rows,cols);
     }
 }
