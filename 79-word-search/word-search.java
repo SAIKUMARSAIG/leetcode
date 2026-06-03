@@ -5,9 +5,10 @@ class Solution {
         boolean[][] visited = new boolean[rows][cols];
         for (int i =0;i<rows;i++){
             for (int j=0;j<cols;j++){
-                if (search(board,word,i,j,rows,cols,0,visited)){
-                    return true;
-                }
+                if (board[i][j] == word.charAt(0) &&
+            search(board, word, i, j, rows, cols, 0, visited)) {
+            return true;
+        }
             }
         }
         return false;
